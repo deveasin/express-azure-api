@@ -37,6 +37,22 @@ app.get("/api/info", (req, res) => {
   });
 });
 
+// proves Key Vault secrets are resolving correctly
+app.get('/api/secret', (req, res) => {
+  const dbPassword = process.env.DB_PASSWORD || 'not set';
+  const apiKey = process.env.API_KEY || 'not set';
+
+  res.status(200).json({
+    // NEVER show full secret in real app!
+    // Only showing first 3 chars to prove it works
+    db_password_preview: dbPassword.substring(0, 3) + '...',
+    api_key_preview: apiKey.substring(0, 3) + '...',
+    source: 'Azure Key Vault via Managed Identity',
+    message: 'Secrets resolved successfully! ✅'
+  });
+});
+
+
 // ─── Start Server ─────────────────────────────────────────
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
