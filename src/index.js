@@ -27,6 +27,16 @@ app.get("/", (req, res) => {
   });
 });
 
+// App Info — reads from environment variables
+app.get("/api/info", (req, res) => {
+  res.status(200).json({
+    environment: process.env.NODE_ENV || "not set",
+    version: process.env.APP_VERSION || "not set",
+    port: process.env.PORT || "not set",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 // ─── Start Server ─────────────────────────────────────────
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
